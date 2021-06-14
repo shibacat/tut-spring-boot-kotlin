@@ -1,0 +1,29 @@
+blog:
+  title: Blog
+  banner:
+    title: Warning
+    content: The blog will be down tomorrow.
+  app:
+    container_name: spring_app
+    build: ./docker-compose/spring
+    depends_on:
+      # dbserverが起動してから、appを起動
+      - dbserver
+
+spring:
+  profiles: docker-compose
+  datasource:
+    url: jdbc:mysql://dbserver/myapp
+    username: root
+    password: root
+    driverClassName: com.mysql.cj.jdbc.Driver
+   jpa:
+     hibernate:
+       ddl-auto: update
+
+  session:
+    store-type: redis
+  redis:
+    host: host.docker.internal # or localhost
+    password:
+    port: 6379
